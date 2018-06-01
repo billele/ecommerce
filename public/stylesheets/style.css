@@ -1,0 +1,9 @@
+.thumbnail img {
+  width: 150px;
+  height: 150px;
+}
+
+.description {
+  color: blue;
+  font-family: 'Open Sans', sans-serif;
+}
