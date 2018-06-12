@@ -8,6 +8,7 @@ var csrfProtection = csrf();
 
 router.use(csrfProtection);
 
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   Product.find(function(err, docs) {
@@ -21,16 +22,13 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/user/signup',function (req,res,next) {
-  res.render('user/signup', {csrfToken: req.csrfToken()});
+  var messages = req.flash('error')
+  res.render('user/signup', {csrfToken: req.csrfToken(), messages: messages, hasErrors: messages.length > 0});
+  console.log('rendu');
 });
 
-router.post('/user/signup', function(req, res, next) {
-  if (req.body.password === req.body.confirmPassword) {
-    next()
-  } else {
-    res.send("ereur mdp");
-  }
-}, passport.authenticate("local.signup",{
+router.post('/user/signup',
+passport.authenticate("local.signup",{
   successRedirect : '/user/profile',
   failureRedirect :'/user/signup',
   failureFlash : true
