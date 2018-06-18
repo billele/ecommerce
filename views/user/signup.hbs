@@ -4,11 +4,31 @@
     {{#if hasErrors}}
     <div class="alert alert-danger">
       {{#each messages}}
-        <p>{{this}}</p>
+      <p>{{this}}</p>
       {{/each}}
     </div>
     {{/if}}
     <form action="/user/signup" method="post">
+      <div class="form-groupe">
+        <label for="nom">nom</label>
+        <input type="text" name="nom" id="nom" class="form-control">
+      </div>
+      <div class="form-groupe">
+        <label for="prenom">prenom</label>
+        <input type="string" name="prenom" id="prenom" class="form-control">
+      </div>
+      <div class="form-groupe">
+        <label for="adresse">adresse</label>
+        <input type="adresse" name="adresse" id="adresse" class="form-control">
+      </div>
+      <div class="form-groupe">
+        <label for="codePostal">code postal</label>
+        <input type="string" name="codePostal" id="comptePostal" class="form-control">
+      </div>
+      <div class="form-groupe">
+        <label for="telephone">téléphone</label>
+        <input type="tel" name="telephone" id="telephone" class="form-control">
+      </div>
       <div class="form-groupe">
         <label for="email">email</label>
         <input type="email" name="email" id="email" class="form-control">
