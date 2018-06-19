@@ -3,6 +3,8 @@ var router = express.Router();
 var Product = require('../models/product');
 var csrf = require('csurf');
 var passport = require('passport');
+var app = express();
+var User = require('../models/user');
 
 var csrfProtection = csrf();
 
@@ -36,7 +38,7 @@ router.post('/user/signup',passport.authenticate("local.signup",{
 
 router.get('/user/profile', function (req,res,next) {
   console.log(req.user)
-  res.render('user/profile', { user: req.user })
+  res.render('user/profile', { user: req.user, csrfToken: req.csrfToken() })
 });
 
 router.get('/user/signin',function (req,res,next) {
@@ -45,11 +47,26 @@ router.get('/user/signin',function (req,res,next) {
 });
 
 
-router.post('/user/signin',passport.authenticate("local.signin",{
+router.post('/user/signin', passport.authenticate("local.signin",{
   successRedirect : '/user/profile',
   badRequestMessage: 'Veuillez entrer un mdp',
   failureRedirect :'/user/signin',
   failureFlash : true
 }));
+
+router.post("/user/profile",  function(req, res, next){
+  var text = ('succes update')
+  User.findOneAndUpdate(
+    { email: req.user.email },
+    { email: req.body.email, nom: req.body.nom, prenom: req.body.prenom, adresse:req.body.adresse,codePostal: req.body.codePostal,
+      telephone: req.body.telephone, password: req.body.password},
+    function(err, user) {
+      if(err) {
+        res.render('user/profile', { user: req.user, errors: err })
+      } else {
+        res.render('user/profile', { user: user, csrfToken: req.csrfToken(), text: text })
+      }
+    });
+  });
 
 module.exports = router;
